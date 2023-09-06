@@ -15,10 +15,12 @@
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "cli-table": "^0.3.11",
     "inquirer": "^9.2.10",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "@types/cli-table": "^0.3.2",
     "@types/inquirer": "^9.0.3",
     "esm": "^3.2.25",
     "ts-node": "^10.9.1",
