@@ -50,9 +50,9 @@ export function setTaskDone(id:number): Promise<boolean>{
     })
 }
 
-export async function viewTask(): Promise<Task[]>{
+export async function viewTask(showFinishedTask:boolean = false): Promise<Task[]>{
     return new Promise((resolve, reject) => { 
-        const query: string = 'SELECT * from task_lists'
+        const query: string = `SELECT * from task_lists WHERE is_done=${showFinishedTask ? '1' : '0'}`
         dbInstance.all(query, function(err,rows: ITask[]){
             if(err) return reject(err)
             resolve(plainToInstance(Task, rows))
