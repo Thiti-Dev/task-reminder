@@ -38,6 +38,18 @@ export function removeTask(id:number): Promise<boolean>{
     })
 }
 
+export function setTaskDone(id:number): Promise<boolean>{
+    return new Promise((resolve) => { 
+        const insertionQuery: string = 'UPDATE task_lists SET is_done=1,done_at=CURRENT_TIMESTAMP WHERE id=?'
+        dbInstance.run(insertionQuery, [id], function(err){
+            if(err){
+                return resolve(false)
+            }
+            resolve(true)
+        })
+    })
+}
+
 export async function viewTask(): Promise<Task[]>{
     return new Promise((resolve, reject) => { 
         const query: string = 'SELECT * from task_lists'
@@ -47,3 +59,5 @@ export async function viewTask(): Promise<Task[]>{
         })
      })
 }
+
+
