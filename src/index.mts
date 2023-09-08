@@ -1,9 +1,9 @@
 import inquirer from 'inquirer'
-import Table from 'cli-table'
 import { IPromptAnswer } from './shared/interfaces/inquirer.interface.mjs'
 import {Action} from './shared/enums/common.mjs'
 import {init} from './db/init.mjs'
 import { addTask, removeTask, setTaskDone, viewTask } from './db/tasks.mjs'
+import { listTasks } from './funcs/list_tasks.mjs'
 
 (async() => {
     // database initialization
@@ -15,26 +15,17 @@ import { addTask, removeTask, setTaskDone, viewTask } from './db/tasks.mjs'
             type:"list",
             name: 'selectedOption',
             message: 'Actions pane: ',
-            choices: [Action.LIST_TASK,Action.DONE_TASK,Action.ADD_TASK,Action.REMOVE_TASK,Action.EXIT],
+            choices: [Action.LIST_TASK,Action.LIST_FINISHED_TASK,Action.DONE_TASK,Action.ADD_TASK,Action.REMOVE_TASK,Action.EXIT],
         })
     
         const {selectedOption} = answer
     
         switch (selectedOption) {
             case Action.LIST_TASK:
-                console.clear()
-                const tasks = await viewTask()
-                const table = new Table({
-                    head: ['ID','NAME','DEADLINE'],
-                    //colWidths:[25,25]
-                })
-
-                tasks.forEach((data) => {
-                    table.push([data.id.toString(), data.name, data.deadLine ? data.deadLine.toLocaleString().toString() : 'NDL'])
-                })
-                console.log(table.toString());
-                console.log("\n")
-
+                await listTasks(false)
+                break;
+            case Action.LIST_FINISHED_TASK:
+                await listTasks(true)  
                 break;
             case Action.ADD_TASK:
                 const task = await inquirer.prompt({
